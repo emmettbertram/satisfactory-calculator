@@ -69,7 +69,7 @@
   import { useDataStore } from '@/stores/data'
   import { type FactoryPlan } from '@/types/factoryPlan'
   import type { Recipe } from '@/types/recipe'
-  import { generateFactorySteps, printFactoryPlan } from '@/services/factoryPlanner'
+  import { generateFactorySteps } from '@/services/factoryPlanner'
   import type { RecipeAmountPerMinute } from '@/types/recipeAmountPerMinute'
 
   interface RecipeWithAmount {

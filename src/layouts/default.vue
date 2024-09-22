@@ -88,13 +88,13 @@
     timestamp: Date
   }>())
 
-  // onErrorCaptured(error => {
-  //   errors.value.push({
-  //     id: errors.value.length + 1,
-  //     error,
-  //     text: extractErrorMessage(error),
-  //     visible: true,
-  //     timestamp: new Date(),
-  //   })
-  // })
+  onErrorCaptured(error => {
+    errors.value.push({
+      id: errors.value.length + 1,
+      error,
+      text: extractErrorMessage(error),
+      visible: true,
+      timestamp: new Date(),
+    })
+  })
 </script>

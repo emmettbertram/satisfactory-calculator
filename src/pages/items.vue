@@ -26,7 +26,7 @@
     },
     async mounted() {
       await this.dataStore.getData()
-      this.items = this.dataStore.items
+      // this.items = this.dataStore.items
     },
   })
 </script>

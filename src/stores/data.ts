@@ -13,7 +13,6 @@ export const useDataStore = defineStore('data', () => {
   const buildings = ref<Building[]>([])
   const resources = ref<Resource[]>([])
   const miners = ref<Miner[]>([])
-  const selectedMiner = ref<Miner>()
 
   const loading = ref(false)
   const isLoaded = ref(false)
@@ -24,7 +23,7 @@ export const useDataStore = defineStore('data', () => {
     }
     loading.value = true
     try {
-      const response = await axios.get('/data.json')
+      const response = await axios.get('/satisfactory-calculator/data.json')
       const data = response.data
 
       preprocessItems(data.items, data.resources)
