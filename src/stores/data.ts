@@ -4,8 +4,8 @@ import type { Recipe } from '@/types/recipe'
 import axios from 'axios'
 import type { Building } from '@/types/building'
 import type { RecipeItem } from '@/types/recipeItem'
-import { Resource } from '@/types/resource'
-import { Miner } from '@/types/miner'
+import type { Resource } from '@/types/resource'
+import type { Miner } from '@/types/miner'
 
 export const useDataStore = defineStore('data', () => {
   const recipes = ref<Recipe[]>([])
