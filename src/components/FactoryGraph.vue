@@ -21,6 +21,11 @@
         :target-y="customEdgeProps.targetY"
       />
     </template>
+    <Background />
+    <Controls
+      position="top-left"
+    />
+    <MiniMap />
   </VueFlow>
 </template>
 
@@ -33,11 +38,17 @@
   import { useLayout } from '@/services/graphLayout'
   import GraphEdge from './GraphEdge.vue'
   import type { ItemAmountPerMinute } from '@/types/itemAmountPerMinute'
+  import { Controls } from '@vue-flow/controls'
+  import { MiniMap } from '@vue-flow/minimap'
+  import { Background } from '@vue-flow/background'
 
   export default defineComponent({
     components: {
       GraphEdge,
       GraphNode,
+      Background,
+      Controls,
+      MiniMap,
       VueFlow,
     },
     props: {
@@ -47,7 +58,8 @@
       },
     },
     setup() {
-      const { fitView } = useVueFlow()
+      const { fitView, onConnect, addEdges } = useVueFlow()
+      onConnect(params => addEdges([params]))
       const { graph, layout } = useLayout()
       return { fitView, graph, layout }
     },
@@ -57,8 +69,6 @@
         edges: [] as Edge[],
       }
     },
-    computed: {
-    },
     watch: {
       factory: {
         handler() {
@@ -67,11 +77,9 @@
         immediate: true,
       },
     },
-    mounted() {
-      // this.constructGraph()
-    },
     methods: {
       computeLayoutNodes() {
+        this.constructEdges()
         this.nodes = this.layout(this.nodes, this.edges)
         nextTick(() => this.fitView())
       },
@@ -86,6 +94,9 @@
             data: step,
           })
         })
+      },
+      constructEdges() {
+        this.edges = []
         this.factory.steps.forEach(step => {
           step.nextSteps.forEach(nextStep => {
             let edgeItem: ItemAmountPerMinute | null = null
@@ -110,11 +121,8 @@
 <style>
 @import '@vue-flow/core/dist/style.css';
 @import '@vue-flow/core/dist/theme-default.css';
+@import '@vue-flow/controls/dist/style.css';
 
-.vue-flow {
-  height: 100%;
-  width: 100%;
-}
 .left-handle {
   left: 0;
 }

@@ -1,8 +1,8 @@
 <template>
-  <v-container fluid>
-    <v-row>
+  <v-container class="row-container" fluid>
+    <v-row class="mb-2">
       <v-col>
-        <v-card class="ma-1">
+        <v-card class="ma-1" :elevation="3">
           <v-card-title>
             Select outputs
           </v-card-title>
@@ -49,12 +49,11 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-row>
-      <v-col class="d-flex fill-height" cols="12">
-        <v-card class="ma-1">
-          <v-card-title>Plan</v-card-title>
-          <v-card-text>
-            <div class="vue-flow-container" style="height: 400px; width: 1200px;">
+    <v-row no-gutters>
+      <v-col>
+        <v-card class="ma-1 fill-space" :elevation="3" style="min-height: 90vh">
+          <v-card-text class="fill-space">
+            <div class="vue-flow-container fill-space">
               <FactoryGraph v-if="factoryPlan" class="fill-space" :factory="factoryPlan" />
             </div>
           </v-card-text>
@@ -110,7 +109,7 @@
         }
       },
       addEmptyRecipe() {
-        this.recipes.push(this.createRecipeWithAmount(null, null, this.recipeIdCounter))
+        this.recipes.push(this.createRecipeWithAmount(null, 10, this.recipeIdCounter))
         this.recipeIdCounter += 1
       },
       removeSelectedRecipe(recipeId: number) {
@@ -127,28 +126,29 @@
         this.factoryPlan = {
           steps,
         }
-        // if (this.recipes.length > 0) {
-        //   const desiredRecipe = this.recipes[0]
-        //   if (desiredRecipe.amount && desiredRecipe.recipe) {
-        //     const steps = generateFactorySteps(desiredRecipe.recipe.slug, desiredRecipe.amount)
-        //     this.factoryPlan = {
-        //       steps,
-        //     }
-        //     // printFactoryPlan(this.factoryPlan)
-        //   }
-        // }
       },
     },
   })
 </script>
 
 <style>
-.vue-flow-container {
-  height: 95%;
-  width: 95%;
-  border: 2px solid black;
+.row-container {
+  height: 100%;
+  width: 100%;
+  display:block;
 }
+.vue-flow-container {
+  display: flex;
+  flex-grow: 1;
+  height: 100%;
+  width: 100%;
+  min-height: 50vh;
+  border: 1px solid black;
+}
+
 .fill-space {
+  display: flex;
+  flex-grow: 1;
   width: 100%;
   height: 100%;
 }

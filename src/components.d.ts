@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AppFooter: typeof import('./components/AppFooter.vue')['default']
+    DarkModeToggleButton: typeof import('./components/DarkModeToggleButton.vue')['default']
     FactoryGraph: typeof import('./components/FactoryGraph.vue')['default']
     GraphEdge: typeof import('./components/GraphEdge.vue')['default']
     GraphNode: typeof import('./components/GraphNode.vue')['default']

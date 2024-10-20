@@ -38,6 +38,7 @@
       <v-app-bar-title>
         Satisfactory Calculator
       </v-app-bar-title>
+      <DarkModeToggleButton />
     </v-app-bar>
     <v-main>
       <router-view />

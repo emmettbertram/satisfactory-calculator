@@ -9,11 +9,6 @@ import { v4 as uuidv4 } from 'uuid'
 
 export const generateFactorySteps = (recipes: RecipeAmountPerMinute[]): FactoryStep[] => {
   const dataStore = useDataStore()
-  // const initialRecipe = dataStore.getRecipeBySlug(recipeSlug)
-  // if (!initialRecipe) {
-  //   throw new Error('Recipe not found')
-  // }
-
   const finalProducts: Item[] = recipes.flatMap(recipeAmountPerMinute => recipeAmountPerMinute.recipe.producedItems.map(producedItem => producedItem.item))
   const factorySteps: FactoryStep[] = []
   const queue: { recipe: Recipe, amountPerMinute: number, parentStepId?: string }[] = recipes.map(recipeAmountPerMinute => {
@@ -103,9 +98,9 @@ export const generateFactorySteps = (recipes: RecipeAmountPerMinute[]): FactoryS
             amountPerMinute: ingredientAmountPerMinute,
             parentStepId: factoryStep.id,
           })
-          factoryStep.isStartingStep = false // Mark as not a starting step
+          factoryStep.isStartingStep = false
         } else {
-          factoryStep.isStartingStep = true // Mark as a starting step if no input recipe
+          factoryStep.isStartingStep = true
         }
       })
       // Populate outputs for all products produced by the recipe

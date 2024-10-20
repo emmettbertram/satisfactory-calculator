@@ -1,0 +1,7 @@
+<script type="text/javascript">
+  // Redirect any 404 page back to the root so Vue Router can handle it
+  var redirectTo = location.pathname.replace('/satisfactory-calculator/', '');
+  if (redirectTo !== '') {
+    location.href = '/satisfactory-calculator/';
+  }
+</script>
