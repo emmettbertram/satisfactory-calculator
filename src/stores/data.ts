@@ -118,22 +118,9 @@ export const useDataStore = defineStore('data', () => {
     return resources.value.find(r => r.item === className) ?? null
   }
 
-  // const getMinerByClassName = (className: string): Miner | null => {
-  //   return miners.value.find(m => m.className === className) ?? null
-  // }
-
-  // const selectedMiner: Miner | null = null
-
-  // const setSelectedMiner = (miner: Miner) => {
-  //   selectedMiner.value = miner
-  // }
-
-  // const getSelectedMiner = (): Miner => {
-  //   if (selectedMiner.value) {
-  //     return selectedMiner.value
-  //   }
-  //   return getMinerByClassName('Build_MinerMk1_C') as Miner
-  // }
+  const getItems = (): Item[] => {
+    return items.value
+  }
 
   return {
     getData,
@@ -141,5 +128,6 @@ export const useDataStore = defineStore('data', () => {
     getItemBySlug,
     getBuildingBySlug,
     getBaseItemRecipes,
+    getItems,
   }
 })
