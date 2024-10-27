@@ -4,7 +4,7 @@
       <v-col>
         <v-card class="ma-1" :elevation="3">
           <v-card-title>
-            Select outputs
+            Select factory outputs
           </v-card-title>
           <v-card-text>
             Select the items you want to produce and specify the target production rate per minute.
@@ -53,10 +53,24 @@
     <v-row no-gutters>
       <v-col>
         <v-card class="ma-1 fill-space" :elevation="3" style="min-height: 90vh">
-          <v-card-text class="fill-space">
-            <div class="vue-flow-container fill-space">
-              <FactoryGraph v-if="factoryPlan" class="fill-space" :factory="factoryPlan" />
-            </div>
+          <v-card-text class="row-container">
+            <v-tabs
+              v-model="productionTab"
+              align-tabs="start"
+            >
+              <v-tab :value="1">Production Graph</v-tab>
+              <v-tab :value="2">Factory Summary</v-tab>
+            </v-tabs>
+            <v-tabs-window v-model="productionTab" class="row-container">
+              <v-tabs-window-item :value="1">
+                <div class="vue-flow-container fill-space" style="min-height: 90vh">
+                  <FactoryGraph v-if="factoryPlan" class="fill-space" :factory="factoryPlan" />
+                </div>
+              </v-tabs-window-item>
+              <v-tabs-window-item :value="2">
+                <FactorySummary v-if="factoryPlan" class="fill-space" :factory="factoryPlan" />
+              </v-tabs-window-item>
+            </v-tabs-window>
           </v-card-text>
         </v-card>
       </v-col>
@@ -71,6 +85,7 @@
   import type { Recipe } from '@/types/recipe'
   import { generateFactorySteps } from '@/services/factoryPlanner'
   import type { RecipeAmountPerMinute } from '@/types/recipeAmountPerMinute'
+  import FactorySummary from '@/components/FactorySummary.vue'
 
   interface RecipeWithAmount {
     recipe: Recipe | null,
@@ -81,6 +96,7 @@
   export default defineComponent({
     components: {
       FactoryGraph,
+      FactorySummary,
     },
     setup() {
       const dataStore = useDataStore()
@@ -92,6 +108,7 @@
         recipes: [] as RecipeWithAmount[],
         recipeIdCounter: 0,
         factoryPlan: null as FactoryPlan | null,
+        productionTab: 1,
       }
     },
     computed: {
