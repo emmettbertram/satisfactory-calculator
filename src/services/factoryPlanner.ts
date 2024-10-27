@@ -18,9 +18,6 @@ export const generateFactorySteps = (recipes: RecipeAmountPerMinute[]): FactoryS
     }
   })
   while (queue.length > 0) {
-    // console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
-    // console.log(`queue iteration with length: ${queue.length}!`)
-    // console.log(queue.map(i => `(item: ${i.recipe.slug}, amount: ${i.amountPerMinute}, parent: ${i.parentStepId?.substring(0, 8) ?? 'none'})`).join(', '))
     const { recipe, amountPerMinute, parentStepId } = queue.shift()!
     const cyclesPerMinute = 60 / recipe.time
     const primaryProductRatePerMachine = cyclesPerMinute * recipe.producedItems[0].amount
@@ -28,8 +25,6 @@ export const generateFactorySteps = (recipes: RecipeAmountPerMinute[]): FactoryS
 
     const existingFactoryStep: FactoryStep | null = getExistingStep(factorySteps, recipe.producedInBuildings[0], recipe)
     if (existingFactoryStep) {
-      // console.log(`found existing factory step: ${existingFactoryStep.id.substring(0, 7)}`)
-      // Update the existing step with new output amounts or connect it to the current step
       recipe.producedItems.forEach(product => {
         const existingOutput = existingFactoryStep.outputs.find(output => output.item.slug === product.item.slug)
         if (existingOutput) {
@@ -37,7 +32,6 @@ export const generateFactorySteps = (recipes: RecipeAmountPerMinute[]): FactoryS
         }
       })
 
-      // Recalculate inputs based on new output
       recipe.ingredientItems.forEach(ingredient => {
         const ingredientAmountPerMinute = ingredient.amount * cyclesPerMinute * numberOfMachines
         const existingInput = existingFactoryStep.inputs.find(input => input.item.slug === ingredient.item.slug)
@@ -58,17 +52,9 @@ export const generateFactorySteps = (recipes: RecipeAmountPerMinute[]): FactoryS
       if (parentStepId) {
         const parentStep = factorySteps.find(step => step.id === parentStepId)
         if (parentStep && !parentStep.nextSteps.includes(existingFactoryStep.id)) {
-          // console.log('adding existing step to the parentStep.nextSteps: ' + existingFactoryStep.id)
           parentStep.nextSteps.push(existingFactoryStep.id)
         }
       }
-      // Connect existing step's nextSteps to new recipe's inputs
-      // recipe.ingredientItems.forEach(ingredient => {
-      //   const previousStep = getExistingStep(factorySteps, building, [input])
-      //   if (previousStep && !previousStep.nextSteps.includes(existingFactoryStep.id)) {
-      //     previousStep.nextSteps.push(existingFactoryStep.id)
-      //   }
-      // })
     } else {
       const factoryStep: FactoryStep = {
         id: uuidv4(),
@@ -82,7 +68,6 @@ export const generateFactorySteps = (recipes: RecipeAmountPerMinute[]): FactoryS
         isFinalProductStep: false,
         numberOfBuildings: numberOfMachines,
       }
-      // Populate inputs based on the recipe's ingredients and calculated machine requirements
       recipe.ingredientItems.forEach(ingredient => {
         const ingredientAmountPerMinute = ingredient.amount * cyclesPerMinute * numberOfMachines
         factoryStep.inputs.push({
@@ -90,7 +75,6 @@ export const generateFactorySteps = (recipes: RecipeAmountPerMinute[]): FactoryS
           amountPerMinute: ingredientAmountPerMinute,
         })
 
-        // Add the upstream recipe for this input to the queue if it exists
         const inputRecipe = dataStore.getRecipeBySlug(ingredient.item.slug)
         if (inputRecipe) {
           queue.push({
@@ -103,19 +87,16 @@ export const generateFactorySteps = (recipes: RecipeAmountPerMinute[]): FactoryS
           factoryStep.isStartingStep = true
         }
       })
-      // Populate outputs for all products produced by the recipe
       recipe.producedItems.forEach(product => {
         const outputAmountPerMinute = product.amount * cyclesPerMinute * numberOfMachines
         factoryStep.outputs.push({
           ...product,
           amountPerMinute: outputAmountPerMinute,
         })
-        // Mark as a final step if it's the user-specified output
         if (finalProducts.some(finalProduct => finalProduct.slug === product.item.slug)) {
           factoryStep.isFinalStep = true
         }
       })
-      // Connect this step to the parent step (if any)
       if (parentStepId) {
         const parentStep = factorySteps.find(step => step.id === parentStepId)
         if (parentStep) {
@@ -126,7 +107,6 @@ export const generateFactorySteps = (recipes: RecipeAmountPerMinute[]): FactoryS
     }
   }
 
-  // handle the starting steps which are from raw resources
   const resourceSteps: FactoryStep[] = []
   factorySteps.filter(step => step.isStartingStep).forEach(step => {
     step.inputs.filter(input => input.item.isResource).forEach(startingItem => {

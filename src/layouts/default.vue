@@ -12,14 +12,8 @@
         nav
       >
         <v-list-item
-          prepend-icon="mdi-home"
-          @click="goTo('/')"
-        >
-          Home
-        </v-list-item>
-        <v-list-item
           prepend-icon="mdi-wrench-cog"
-          @click="goTo('/planner')"
+          @click="goTo('/')"
         >
           Planner
         </v-list-item>
