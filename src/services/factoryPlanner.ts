@@ -38,7 +38,7 @@ export const generateFactorySteps = (recipes: RecipeAmountPerMinute[]): FactoryS
         if (existingInput) {
           existingInput.amountPerMinute += ingredientAmountPerMinute
         }
-        const ingredientRecipe = dataStore.getRecipeBySlug(ingredient.item.slug)
+        const ingredientRecipe = dataStore.getRecipeByName(ingredient.item.name)
         if (ingredientRecipe) {
           queue.push({
             recipe: ingredientRecipe,
@@ -75,7 +75,7 @@ export const generateFactorySteps = (recipes: RecipeAmountPerMinute[]): FactoryS
           amountPerMinute: ingredientAmountPerMinute,
         })
 
-        const inputRecipe = dataStore.getRecipeBySlug(ingredient.item.slug)
+        const inputRecipe = dataStore.getRecipeByName(ingredient.item.name)
         if (inputRecipe) {
           queue.push({
             recipe: inputRecipe,

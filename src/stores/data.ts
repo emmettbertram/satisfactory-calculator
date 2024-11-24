@@ -23,7 +23,7 @@ export const useDataStore = defineStore('data', () => {
     }
     loading.value = true
     try {
-      const response = await axios.get('/satisfactory-calculator/data.json')
+      const response = await axios.get('/satisfactory-calculator/data1.0.json')
       const data = response.data
 
       preprocessItems(data.items, data.resources)
@@ -94,6 +94,10 @@ export const useDataStore = defineStore('data', () => {
     return recipes.value.find(r => r.slug === slug) ?? null
   }
 
+  const getRecipeByName = (name: string): Recipe | null => {
+    return recipes.value.find(r => r.name === name) ?? null
+  }
+
   const getItemByClassName = (className: string): Item | null => {
     return items.value.find(i => i.className === className) ?? null
   }
@@ -125,6 +129,7 @@ export const useDataStore = defineStore('data', () => {
   return {
     getData,
     getRecipeBySlug,
+    getRecipeByName,
     getItemBySlug,
     getBuildingBySlug,
     getBaseItemRecipes,
